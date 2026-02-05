@@ -13,7 +13,14 @@ const security = require('../lib/insecurity')
 
 module.exports = function productReviews () {
   return (req: Request, res: Response, next: NextFunction) => {
-    const id = req.body.id
+    // Validate and sanitize id to prevent NoSQL injection
+    const rawId = req.body.id
+    if (!rawId || typeof rawId !== 'string' || rawId.trim().length === 0) {
+      res.status(400).json({ error: 'Invalid id parameter' })
+      return
+    }
+    // Sanitize: ensure id is a plain string, not an object that could contain MongoDB operators
+    const id = String(rawId).trim()
     const user = security.authenticatedUsers.from(req)
     db.reviews.findOne({ _id: id }).then((review: Review) => {
       if (!review) {
