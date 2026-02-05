@@ -74,6 +74,7 @@ const metrics = require('./routes/metrics')
 const authenticatedUsers = require('./routes/authenticatedUsers')
 const currentUser = require('./routes/currentUser')
 const login = require('./routes/login')
+const authLogin = require('./routes/authLogin')
 const changePassword = require('./routes/changePassword')
 const resetPassword = require('./routes/resetPassword')
 const securityQuestion = require('./routes/securityQuestion')
@@ -548,6 +549,7 @@ restoreOverwrittenFilesWithOriginals().then(() => {
 
   /* Custom Restful API */
   app.post('/rest/user/login', login())
+  app.post('/rest/user/auth/login', authLogin())
   app.get('/rest/user/change-password', changePassword())
   app.post('/rest/user/reset-password', resetPassword())
   app.get('/rest/user/security-question', securityQuestion())
